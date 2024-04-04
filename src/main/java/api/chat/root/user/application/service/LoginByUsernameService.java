@@ -2,7 +2,7 @@ package api.chat.root.user.application.service;
 
 import api.chat.root.user.application.port.in.LoginByUsernameUseCase;
 import api.chat.root.user.application.port.in.command.LoginByUsernameCommand;
-import api.chat.root.user.application.port.out.LoadPasswordAuthenticationPort;
+import api.chat.root.user.application.port.out.LoadUsernameAuthenticationPort;
 import api.chat.root.user.application.port.out.LoadUserByUsernamePort;
 import api.chat.root.user.application.port.out.MatchPasswordPort;
 import api.chat.root.user.application.port.out.PersistUserPort;
@@ -17,17 +17,17 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class LoginByUsernameService implements LoginByUsernameUseCase {
-	private final LoadPasswordAuthenticationPort loadPasswordAuthenticationPort;
+	private final LoadUsernameAuthenticationPort loadUsernameAuthenticationPort;
 	private final MatchPasswordPort matchPasswordPort;
 	private final LoadUserByUsernamePort loadUserByUsernamePort;
 	private final PersistUserPort persistUserPort;
 
 	@Override
 	public AuthenticatedUser login(LoginByUsernameCommand command) {
-		var passwordAuthentication = loadPasswordAuthenticationPort.load(command.username());
+		var usernameAuthentication = loadUsernameAuthenticationPort.load(command.username());
 
 		var user = loadUserByUsernamePort.load(command.username());
-		user.authenticate(command.password(), passwordAuthentication, matchPasswordPort);
+		user.authenticate(command.password(), usernameAuthentication, matchPasswordPort);
 		persistUserPort.persist(user);
 
 		return mapUserToAuthenticatedUser(user);
