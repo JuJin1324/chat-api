@@ -3,8 +3,8 @@ package api.chat.root.user.application.service;
 import api.chat.root.user.application.port.in.PhoneVerificationUseCase;
 import api.chat.root.user.application.port.in.command.PhoneVerificationCommand;
 import api.chat.root.user.application.port.out.LoadCodeVerificationByPhonePort;
-import api.chat.root.user.application.port.out.LoadUserByPhonePort;
-import api.chat.root.user.domain.verification.VerifiedUser;
+import api.chat.root.user.application.port.out.PersistCodeVerificationPort;
+import api.chat.root.user.domain.verification.VerificationToken;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -15,15 +15,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PhoneVerificationService implements PhoneVerificationUseCase {
 	private final LoadCodeVerificationByPhonePort loadCodeVerificationByPhonePort;
-	private final LoadUserByPhonePort loadUserByPhonePort;
+	private final PersistCodeVerificationPort persistCodeVerificationPort;
 
 	@Override
-	public VerifiedUser verify(PhoneVerificationCommand command) {
-		var codeVerification = loadCodeVerificationByPhonePort.loadByPhone(command.phoneNumber());
+	public VerificationToken verify(PhoneVerificationCommand command) {
+		var codeVerification = loadCodeVerificationByPhonePort.load(command.phoneNumber());
 		codeVerification.verify(command.code());
+		persistCodeVerificationPort.persist(codeVerification);
 
-		var user = loadUserByPhonePort.load(command.phoneNumber());
-
-		return new VerifiedUser(user.getNickname(), user.getProfileImageUrl(), codeVerification.getVerificationToken());
+		return codeVerification.getVerificationToken();
 	}
 }

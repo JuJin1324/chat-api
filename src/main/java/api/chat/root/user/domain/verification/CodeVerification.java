@@ -1,7 +1,5 @@
 package api.chat.root.user.domain.verification;
 
-import java.time.LocalDateTime;
-
 import api.chat.root.user.domain.VerificationCode;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,12 +17,7 @@ public abstract class CodeVerification {
 	private VerificationToken verificationToken;
 
 	public void verify(String code) {
-		if (this.isExpired()) {
-			throw new RuntimeException();
-		}
-		if (this.hasNotMatched(code)) {
-			throw new RuntimeException();
-		}
+		requireCode(code);
 
 		this.verificationCode = null;
 		this.verificationToken = VerificationToken.generate();
@@ -34,14 +27,15 @@ public abstract class CodeVerification {
 		return this.verificationCode == null && this.verificationToken != null;
 	}
 
-	private boolean hasNotMatched(String credential) {
+	private void requireCode(String code) {
 		if (this.verificationCode == null) {
-			return false;
+			throw new RuntimeException();
 		}
-		return this.verificationCode.code().equals(credential);
-	}
-
-	private boolean isExpired() {
-		return LocalDateTime.now().isAfter(this.verificationCode.expirationTime());
+		if (this.verificationCode.isExpired()) {
+			throw new RuntimeException();
+		}
+		if (this.verificationCode.hasNotMatched(code)) {
+			throw new RuntimeException();
+		}
 	}
 }

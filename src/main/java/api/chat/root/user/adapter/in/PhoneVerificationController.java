@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import api.chat.root.user.application.port.in.PhoneVerificationUseCase;
 import api.chat.root.user.application.port.in.command.PhoneVerificationCommand;
-import api.chat.root.user.domain.verification.VerifiedUser;
+import api.chat.root.user.domain.verification.VerificationToken;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,7 @@ public class PhoneVerificationController {
 	private final PhoneVerificationUseCase phoneVerificationUseCase;
 
 	@PostMapping("/users/verification/phone")
-	public VerifiedUser verifyPhone(PhoneVerificationRequest request) {
+	public VerificationToken verifyPhone(PhoneVerificationRequest request) {
 		var command = mapRequestToCommand(request);
 		return phoneVerificationUseCase.verify(command);
 	}

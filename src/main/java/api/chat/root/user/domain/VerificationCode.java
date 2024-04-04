@@ -12,4 +12,12 @@ public record VerificationCode(String code, LocalDateTime expirationTime) {
 	public static VerificationCode generate() {
 		return new VerificationCode("1234", LocalDateTime.now().plusMinutes(5));
 	}
+
+	public boolean isExpired() {
+		return LocalDateTime.now().isAfter(this.expirationTime);
+	}
+
+	public boolean hasNotMatched(String code) {
+		return this.code.equalsIgnoreCase(code);
+	}
 }

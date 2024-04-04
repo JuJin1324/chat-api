@@ -1,5 +1,9 @@
 package api.chat.root.user.domain;
 
+import api.chat.root.user.application.port.out.MatchPasswordPort;
+import api.chat.root.user.domain.authentication.AccessToken;
+import api.chat.root.user.domain.authentication.CodeAuthentication;
+import api.chat.root.user.domain.authentication.PasswordAuthentication;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,5 +21,15 @@ public class User {
 	private String phoneNumber;
 	private String emailAddress;
 	private final String username;
-	private String password;
+	private AccessToken accessToken;
+
+	public void authenticate(String code, CodeAuthentication codeAuthentication) {
+		this.accessToken = codeAuthentication.authenticate(code);
+	}
+
+	public void authenticate(String password, PasswordAuthentication passwordAuthentication,
+		MatchPasswordPort matchPasswordPort) {
+
+		this.accessToken = passwordAuthentication.authenticate(password, matchPasswordPort);
+	}
 }

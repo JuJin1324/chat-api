@@ -12,14 +12,12 @@ import lombok.Getter;
 public class PhoneAuthentication extends CodeAuthentication {
 	private final String phoneNumber;
 
-	protected PhoneAuthentication(VerificationCode verificationCode, AccessToken accessToken,
-		String phoneNumber) {
-
-		super(verificationCode, accessToken);
+	protected PhoneAuthentication(VerificationCode verificationCode, String phoneNumber) {
+		super(verificationCode);
 		this.phoneNumber = phoneNumber;
 	}
 
 	public static PhoneAuthentication generate(String phoneNumber) {
-		return new PhoneAuthentication(VerificationCode.generate(), null, phoneNumber);
+		return new PhoneAuthentication(VerificationCode.generate(), phoneNumber);
 	}
 }

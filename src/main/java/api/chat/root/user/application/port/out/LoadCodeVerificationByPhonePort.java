@@ -7,5 +7,5 @@ import api.chat.root.user.domain.verification.CodeVerification;
  * Created Date : 4/4/24
  */
 public interface LoadCodeVerificationByPhonePort {
-	CodeVerification loadByPhone(String phoneNumber);
+	CodeVerification load(String phoneNumber);
 }
