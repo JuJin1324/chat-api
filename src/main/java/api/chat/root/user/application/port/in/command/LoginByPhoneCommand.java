@@ -5,5 +5,5 @@ package api.chat.root.user.application.port.in.command;
  * Created Date : 3/31/24
  */
 
-public record LoginCommand(String username, String password) {
+public record LoginByPhoneCommand(String phoneNumber, String code) {
 }

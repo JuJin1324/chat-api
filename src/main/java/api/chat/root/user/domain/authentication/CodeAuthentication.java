@@ -1,4 +1,4 @@
-package api.chat.root.user.domain.verification;
+package api.chat.root.user.domain.authentication;
 
 import java.time.LocalDateTime;
 
@@ -14,9 +14,9 @@ import lombok.Getter;
 
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public abstract class CodeVerification {
+public abstract class CodeAuthentication {
 	private VerificationCode verificationCode;
-	private VerificationToken verificationToken;
+	private AccessToken accessToken;
 
 	public void verify(String code) {
 		if (this.isExpired()) {
@@ -27,11 +27,11 @@ public abstract class CodeVerification {
 		}
 
 		this.verificationCode = null;
-		this.verificationToken = VerificationToken.generate();
+		this.accessToken = AccessToken.generate();
 	}
 
 	public boolean isVerified() {
-		return this.verificationCode == null && this.verificationToken != null;
+		return this.verificationCode == null && this.accessToken != null;
 	}
 
 	private boolean hasNotMatched(String credential) {

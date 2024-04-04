@@ -2,6 +2,7 @@ package api.chat.root.user.application.service;
 
 import api.chat.root.user.application.port.in.EmailVerificationUseCase;
 import api.chat.root.user.application.port.in.command.EmailVerificationCommand;
+import api.chat.root.user.application.port.out.LoadCodeVerificationByEmailPort;
 import api.chat.root.user.application.port.out.LoadUserByEmailPort;
 import api.chat.root.user.domain.verification.VerifiedUser;
 import lombok.RequiredArgsConstructor;
@@ -13,12 +14,16 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class EmailVerificationService implements EmailVerificationUseCase {
+	private final LoadCodeVerificationByEmailPort loadCodeVerificationByEmailPort;
 	private final LoadUserByEmailPort loadUserByEmailPort;
 
 	@Override
 	public VerifiedUser verify(EmailVerificationCommand command) {
+		var codeVerification = loadCodeVerificationByEmailPort.loadByEmail(command.emailAddress());
+		codeVerification.verify(command.code());
+
 		var user = loadUserByEmailPort.load(command.emailAddress());
-		var verificationToken = user.verifyEmail(command.code());
-		return new VerifiedUser(user.getNickname(), user.getProfileImageUrl(), verificationToken);
+
+		return new VerifiedUser(user.getNickname(), user.getProfileImageUrl(), codeVerification.getVerificationToken());
 	}
 }

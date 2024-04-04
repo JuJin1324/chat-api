@@ -4,10 +4,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import api.chat.root.user.application.port.in.EmailVerificationUseCase;
-import api.chat.root.user.application.port.in.LoginUseCase;
+import api.chat.root.user.application.port.in.LoginByPhoneUseCase;
 import api.chat.root.user.application.port.in.PhoneVerificationUseCase;
 import api.chat.root.user.application.service.EmailVerificationService;
-import api.chat.root.user.application.service.LoginService;
+import api.chat.root.user.application.service.LoginByPhoneService;
 import api.chat.root.user.application.service.PhoneVerificationService;
 import lombok.RequiredArgsConstructor;
 
@@ -21,17 +21,17 @@ import lombok.RequiredArgsConstructor;
 public class UserUseCaseConfig {
 
 	@Bean
-	public LoginUseCase loginUseCase() {
-		return new LoginService(null, null);
+	public LoginByPhoneUseCase loginUseCase() {
+		return new LoginByPhoneService(null, null, null);
 	}
 
 	@Bean
 	public EmailVerificationUseCase emailVerificationUseCase() {
-		return new EmailVerificationService(null);
+		return new EmailVerificationService(null, null);
 	}
 
 	@Bean
 	public PhoneVerificationUseCase phoneVerificationUseCase() {
-		return new PhoneVerificationService(null);
+		return new PhoneVerificationService(null, null);
 	}
 }
