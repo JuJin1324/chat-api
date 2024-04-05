@@ -1,5 +1,7 @@
 package api.chat.root.user.domain.verification;
 
+import java.time.LocalDateTime;
+
 import api.chat.root.user.domain.VerificationCode;
 import lombok.Getter;
 
@@ -12,14 +14,14 @@ import lombok.Getter;
 public class EmailVerification extends CodeVerification {
 	private final String emailAddress;
 
-	protected EmailVerification(VerificationCode verificationCode, VerificationToken verificationToken,
+	protected EmailVerification(VerificationCode verificationCode, boolean verified, LocalDateTime expirationTime,
 		String emailAddress) {
 
-		super(verificationCode, verificationToken);
+		super(verificationCode, verified, expirationTime);
 		this.emailAddress = emailAddress;
 	}
 
 	public static EmailVerification generate(String emailAddress) {
-		return new EmailVerification(VerificationCode.generate(), null, emailAddress);
+		return new EmailVerification(VerificationCode.generate(), false, null, emailAddress);
 	}
 }

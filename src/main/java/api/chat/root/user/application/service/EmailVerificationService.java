@@ -4,7 +4,6 @@ import api.chat.root.user.application.port.in.EmailVerificationUseCase;
 import api.chat.root.user.application.port.in.command.EmailVerificationCommand;
 import api.chat.root.user.application.port.out.LoadEmailVerificationPort;
 import api.chat.root.user.application.port.out.PersistCodeVerificationPort;
-import api.chat.root.user.domain.verification.VerificationToken;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -18,11 +17,11 @@ public class EmailVerificationService implements EmailVerificationUseCase {
 	private final PersistCodeVerificationPort persistCodeVerificationPort;
 
 	@Override
-	public VerificationToken verify(EmailVerificationCommand command) {
+	public boolean verify(EmailVerificationCommand command) {
 		var emailVerification = loadEmailVerificationPort.load(command.emailAddress());
 		emailVerification.verify(command.code());
 		persistCodeVerificationPort.persist(emailVerification);
 
-		return emailVerification.getVerificationToken();
+		return emailVerification.isVerified();
 	}
 }

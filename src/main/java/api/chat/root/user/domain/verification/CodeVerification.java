@@ -1,5 +1,7 @@
 package api.chat.root.user.domain.verification;
 
+import java.time.LocalDateTime;
+
 import api.chat.root.user.domain.VerificationCode;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -14,17 +16,19 @@ import lombok.Getter;
 @Getter
 public abstract class CodeVerification {
 	private VerificationCode verificationCode;
-	private VerificationToken verificationToken;
+	private boolean verified;
+	private LocalDateTime expirationTime;
 
 	public void verify(String code) {
 		requireCode(code);
 
 		this.verificationCode = null;
-		this.verificationToken = VerificationToken.generate();
+		this.verified = true;
+		this.expirationTime = LocalDateTime.now().plusMinutes(30);
 	}
 
 	public boolean isVerified() {
-		return this.verificationCode == null && this.verificationToken != null;
+		return verified && LocalDateTime.now().isBefore(expirationTime);
 	}
 
 	private void requireCode(String code) {

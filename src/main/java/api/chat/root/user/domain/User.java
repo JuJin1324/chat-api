@@ -4,6 +4,7 @@ import api.chat.root.user.application.port.out.MatchPasswordPort;
 import api.chat.root.user.domain.authentication.AccessToken;
 import api.chat.root.user.domain.authentication.CodeAuthentication;
 import api.chat.root.user.domain.authentication.PasswordAuthentication;
+import api.chat.root.user.domain.verification.CodeVerification;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -22,6 +23,30 @@ public class User {
 	private String emailAddress;
 	private final String username;
 	private AccessToken accessToken;
+
+	public static User ofPhone(String nickname, String profileImageUrl, String phoneNumber,
+		CodeVerification codeVerification) {
+
+		requireCodeVerification(codeVerification);
+
+		return new User(UserId.generate(), nickname, profileImageUrl, phoneNumber, null,
+			null, null);
+	}
+
+	public static User ofEmail(String nickname, String profileImageUrl, String emailAddress,
+		CodeVerification codeVerification) {
+
+		requireCodeVerification(codeVerification);
+
+		return new User(UserId.generate(), nickname, profileImageUrl, null, emailAddress,
+			null, null);
+	}
+
+	private static void requireCodeVerification(CodeVerification codeVerification) {
+		if (!codeVerification.isVerified()) {
+			throw new RuntimeException();
+		}
+	}
 
 	public void authenticate(String code, CodeAuthentication codeAuthentication) {
 		this.accessToken = codeAuthentication.authenticate(code);

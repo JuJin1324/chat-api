@@ -1,5 +1,7 @@
 package api.chat.root.user.domain.verification;
 
+import java.time.LocalDateTime;
+
 import api.chat.root.user.domain.VerificationCode;
 import lombok.Getter;
 
@@ -12,14 +14,14 @@ import lombok.Getter;
 public class PhoneVerification extends CodeVerification {
 	private final String phoneNumber;
 
-	protected PhoneVerification(VerificationCode verificationCode, VerificationToken verificationToken,
+	protected PhoneVerification(VerificationCode verificationCode, boolean verified, LocalDateTime expirationTime,
 		String phoneNumber) {
 
-		super(verificationCode, verificationToken);
+		super(verificationCode, verified, expirationTime);
 		this.phoneNumber = phoneNumber;
 	}
 
 	public static PhoneVerification generate(String phoneNumber) {
-		return new PhoneVerification(VerificationCode.generate(), null, phoneNumber);
+		return new PhoneVerification(VerificationCode.generate(), false, null, phoneNumber);
 	}
 }

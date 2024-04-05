@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import api.chat.root.user.application.port.in.EmailVerificationUseCase;
 import api.chat.root.user.application.port.in.command.EmailVerificationCommand;
-import api.chat.root.user.domain.verification.VerificationToken;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,20 +21,28 @@ public class EmailVerificationController {
 	private final EmailVerificationUseCase emailVerificationUseCase;
 
 	@PostMapping("/users/verification/email")
-	public VerificationToken verifyPhone(PhoneVerificationRequest request) {
+	public EmailVerificationResponse verifyPhone(EmailVerificationRequest request) {
 		var command = mapRequestToCommand(request);
-		return emailVerificationUseCase.verify(command);
+		var verified = emailVerificationUseCase.verify(command);
+		return new EmailVerificationResponse(verified);
 	}
 
-	private EmailVerificationCommand mapRequestToCommand(PhoneVerificationRequest request) {
+	private EmailVerificationCommand mapRequestToCommand(EmailVerificationRequest request) {
 		return new EmailVerificationCommand(request.getEmailAddress(), request.getCode());
 	}
 
 	@NoArgsConstructor
 	@AllArgsConstructor
 	@Getter
-	public static class PhoneVerificationRequest {
+	public static class EmailVerificationRequest {
 		private String emailAddress;
 		private String code;
+	}
+
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Getter
+	public static class EmailVerificationResponse {
+		private boolean isVerified;
 	}
 }
