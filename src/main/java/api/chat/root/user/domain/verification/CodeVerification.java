@@ -2,7 +2,6 @@ package api.chat.root.user.domain.verification;
 
 import java.time.LocalDateTime;
 
-import api.chat.root.user.domain.VerificationCode;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

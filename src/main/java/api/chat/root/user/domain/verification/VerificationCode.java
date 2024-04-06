@@ -1,4 +1,4 @@
-package api.chat.root.user.domain;
+package api.chat.root.user.domain.verification;
 
 import java.time.LocalDateTime;
 

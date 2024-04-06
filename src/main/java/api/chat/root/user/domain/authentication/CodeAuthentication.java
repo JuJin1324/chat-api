@@ -1,6 +1,6 @@
 package api.chat.root.user.domain.authentication;
 
-import api.chat.root.user.domain.VerificationCode;
+import api.chat.root.user.domain.verification.VerificationCode;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
