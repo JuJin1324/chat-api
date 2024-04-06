@@ -4,7 +4,7 @@ import api.chat.root.user.application.port.in.LoginByPhoneUseCase;
 import api.chat.root.user.application.port.in.command.LoginByPhoneCommand;
 import api.chat.root.user.application.port.out.LoadPhoneAuthenticationPort;
 import api.chat.root.user.application.port.out.LoadUserByPhonePort;
-import api.chat.root.user.application.port.out.PersistCodeAuthenticationPort;
+import api.chat.root.user.application.port.out.PersistPhoneAuthenticationPort;
 import api.chat.root.user.application.port.out.PersistUserPort;
 import api.chat.root.user.domain.User;
 import api.chat.root.user.domain.authentication.AuthenticatedUser;
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LoginByPhoneService implements LoginByPhoneUseCase {
 	private final LoadPhoneAuthenticationPort loadPhoneAuthenticationPort;
-	private final PersistCodeAuthenticationPort persistCodeAuthenticationPort;
+	private final PersistPhoneAuthenticationPort persistPhoneAuthenticationPort;
 	private final LoadUserByPhonePort loadUserByPhonePort;
 	private final PersistUserPort persistUserPort;
 
@@ -29,7 +29,7 @@ public class LoginByPhoneService implements LoginByPhoneUseCase {
 		var user = loadUserByPhonePort.load(command.phoneNumber());
 		user.authenticate(command.code(), phoneAuthentication);
 
-		persistCodeAuthenticationPort.persist(phoneAuthentication);
+		persistPhoneAuthenticationPort.persist(phoneAuthentication);
 		persistUserPort.persist(user);
 
 		return mapUserToAuthenticatedUser(user);
