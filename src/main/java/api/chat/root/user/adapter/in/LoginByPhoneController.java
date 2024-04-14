@@ -6,9 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 import api.chat.root.user.application.port.in.LoginByPhoneUseCase;
 import api.chat.root.user.application.port.in.command.LoginByPhoneCommand;
 import api.chat.root.user.domain.authentication.AuthenticatedUser;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -23,19 +20,12 @@ public class LoginByPhoneController {
 
 	@PostMapping("/users/login-by-phone")
 	public AuthenticatedUser login(LoginByPhoneRequest request) {
-		var command = mapRequestToCommand(request);
-		return loginByPhoneUseCase.login(command);
+		return loginByPhoneUseCase.login(request.toCommand());
 	}
 
-	private LoginByPhoneCommand mapRequestToCommand(LoginByPhoneRequest request) {
-		return new LoginByPhoneCommand(request.getPhoneNumber(), request.getCode());
-	}
-
-	@NoArgsConstructor
-	@AllArgsConstructor
-	@Getter
-	public static class LoginByPhoneRequest {
-		private String phoneNumber;
-		private String code;
+	public record LoginByPhoneRequest(String phoneNumber, String code) {
+		public LoginByPhoneCommand toCommand() {
+			return new LoginByPhoneCommand(phoneNumber, code);
+		}
 	}
 }

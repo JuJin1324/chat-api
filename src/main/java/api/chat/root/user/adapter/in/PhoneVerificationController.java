@@ -5,9 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import api.chat.root.user.application.port.in.PhoneVerificationUseCase;
 import api.chat.root.user.application.port.in.command.PhoneVerificationCommand;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -22,27 +19,16 @@ public class PhoneVerificationController {
 
 	@PostMapping("/users/verification/phone")
 	public PhoneVerificationResponse verifyPhone(PhoneVerificationRequest request) {
-		var command = mapRequestToCommand(request);
-		var verified = phoneVerificationUseCase.verify(command);
+		var verified = phoneVerificationUseCase.verify(request.toCommand());
 		return new PhoneVerificationResponse(verified);
 	}
 
-	private PhoneVerificationCommand mapRequestToCommand(PhoneVerificationRequest request) {
-		return new PhoneVerificationCommand(request.getPhoneNumber(), request.getCode());
+	public record PhoneVerificationRequest(String phoneNumber, String code) {
+		public PhoneVerificationCommand toCommand() {
+			return new PhoneVerificationCommand(phoneNumber, code);
+		}
 	}
 
-	@NoArgsConstructor
-	@AllArgsConstructor
-	@Getter
-	public static class PhoneVerificationRequest {
-		private String phoneNumber;
-		private String code;
-	}
-
-	@NoArgsConstructor
-	@AllArgsConstructor
-	@Getter
-	public static class PhoneVerificationResponse {
-		private boolean isVerified;
+	public record PhoneVerificationResponse(boolean isVerified) {
 	}
 }
