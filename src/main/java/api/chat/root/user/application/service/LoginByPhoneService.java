@@ -6,7 +6,6 @@ import api.chat.root.user.application.port.out.LoadPhoneAuthenticationPort;
 import api.chat.root.user.application.port.out.LoadUserByPhonePort;
 import api.chat.root.user.application.port.out.PersistPhoneAuthenticationPort;
 import api.chat.root.user.application.port.out.PersistUserPort;
-import api.chat.root.user.domain.User;
 import api.chat.root.user.domain.authentication.AuthenticatedUser;
 import lombok.RequiredArgsConstructor;
 
@@ -32,10 +31,6 @@ public class LoginByPhoneService implements LoginByPhoneUseCase {
 		persistPhoneAuthenticationPort.persist(phoneAuthentication);
 		persistUserPort.persist(user);
 
-		return mapUserToAuthenticatedUser(user);
-	}
-
-	private AuthenticatedUser mapUserToAuthenticatedUser(User user) {
-		return new AuthenticatedUser(user.getNickname(), user.getProfileImageUrl(), user.getAccessToken());
+		return AuthenticatedUser.from(user);
 	}
 }

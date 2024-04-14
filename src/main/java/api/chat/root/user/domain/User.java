@@ -19,27 +19,25 @@ public class User {
 	private final UserId id;
 	private String nickname;
 	private String profileImageUrl;
-	private String phoneNumber;
-	private String emailAddress;
-	private final String username;
+	private PhoneNumber phoneNumber;
+	private EmailAddress emailAddress;
+	private String username;
 	private AccessToken accessToken;
 
-	public static User ofPhone(String nickname, String profileImageUrl, String phoneNumber,
+	public User(String nickname, String profileImageUrl, PhoneNumber phoneNumber,
 		CodeVerification codeVerification) {
 
-		requireCodeVerification(codeVerification);
+		this(UserId.generate(), nickname, profileImageUrl, phoneNumber, null, null, null);
 
-		return new User(UserId.generate(), nickname, profileImageUrl, phoneNumber, null,
-			null, null);
+		requireCodeVerification(codeVerification);
 	}
 
-	public static User ofEmail(String nickname, String profileImageUrl, String emailAddress,
+	public User(String nickname, String profileImageUrl, EmailAddress emailAddress,
 		CodeVerification codeVerification) {
 
-		requireCodeVerification(codeVerification);
+		this(UserId.generate(), nickname, profileImageUrl, null, emailAddress, null, null);
 
-		return new User(UserId.generate(), nickname, profileImageUrl, null, emailAddress,
-			null, null);
+		requireCodeVerification(codeVerification);
 	}
 
 	private static void requireCodeVerification(CodeVerification codeVerification) {

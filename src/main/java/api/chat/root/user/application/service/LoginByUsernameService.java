@@ -30,10 +30,6 @@ public class LoginByUsernameService implements LoginByUsernameUseCase {
 		user.authenticate(command.password(), usernameAuthentication, matchPasswordPort);
 		persistUserPort.persist(user);
 
-		return mapUserToAuthenticatedUser(user);
-	}
-
-	private AuthenticatedUser mapUserToAuthenticatedUser(User user) {
-		return new AuthenticatedUser(user.getNickname(), user.getProfileImageUrl(), user.getAccessToken());
+		return AuthenticatedUser.from(user);
 	}
 }
