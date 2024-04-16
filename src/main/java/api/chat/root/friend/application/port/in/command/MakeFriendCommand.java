@@ -1,4 +1,4 @@
-package api.chat.root.friend.service.command;
+package api.chat.root.friend.application.port.in.command;
 
 import java.util.UUID;
 

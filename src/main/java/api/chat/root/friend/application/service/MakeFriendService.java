@@ -1,9 +1,9 @@
-package api.chat.root.friend.service.impl;
+package api.chat.root.friend.application.service;
 
+import api.chat.root.friend.application.port.in.MakeFriendUseCase;
+import api.chat.root.friend.application.port.in.command.MakeFriendCommand;
+import api.chat.root.friend.application.port.out.PersistFriendPort;
 import api.chat.root.friend.domain.Friend;
-import api.chat.root.friend.repository.FriendRepository;
-import api.chat.root.friend.service.MakeFriendUseCase;
-import api.chat.root.friend.service.command.MakeFriendCommand;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -13,11 +13,11 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class MakeFriendService implements MakeFriendUseCase {
-	private final FriendRepository friendRepository;
+	private final PersistFriendPort persistFriendPort;
 
 	@Override
 	public void makeFriend(MakeFriendCommand command) {
 		var friend = new Friend(command.userId(), command.actor(), false, false);
-		friendRepository.save(friend);
+		persistFriendPort.persist(friend);
 	}
 }

@@ -1,12 +1,12 @@
-package api.chat.root.friend.controller;
+package api.chat.root.friend.adapter.in;
 
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import api.chat.root.friend.service.MakeFriendUseCase;
-import api.chat.root.friend.service.command.MakeFriendCommand;
+import api.chat.root.friend.application.port.in.MakeFriendUseCase;
+import api.chat.root.friend.application.port.in.command.MakeFriendCommand;
 import lombok.RequiredArgsConstructor;
 
 /**

@@ -1,6 +1,6 @@
-package api.chat.root.friend.service;
+package api.chat.root.friend.application.port.in;
 
-import api.chat.root.friend.service.command.MakeFriendCommand;
+import api.chat.root.friend.application.port.in.command.MakeFriendCommand;
 
 /**
  * Created by Yoo Ju Jin(jujin1324@daum.net)

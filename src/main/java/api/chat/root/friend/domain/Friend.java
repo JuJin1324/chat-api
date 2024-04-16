@@ -13,11 +13,11 @@ public record Friend(
 	boolean favorite,
 	boolean blocked
 ) {
-	public Friend favorite(boolean favorite) {
+	public Friend withFavorite(boolean favorite) {
 		return new Friend(this.userId, this.ownerUserId, favorite, this.blocked);
 	}
 
-	public Friend block(boolean blocked) {
+	public Friend withBlocked(boolean blocked) {
 		return new Friend(this.userId, this.ownerUserId, this.favorite, blocked);
 	}
 }
