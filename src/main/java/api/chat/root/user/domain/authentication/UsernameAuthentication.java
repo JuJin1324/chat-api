@@ -1,5 +1,6 @@
 package api.chat.root.user.domain.authentication;
 
+import api.chat.root.user.application.port.out.EncodePasswordPort;
 import lombok.Getter;
 
 /**
@@ -11,12 +12,12 @@ import lombok.Getter;
 public class UsernameAuthentication extends PasswordAuthentication {
 	private final String username;
 
-	protected UsernameAuthentication(String password, String username) {
-		super(password);
+	protected UsernameAuthentication(String password, EncodePasswordPort encodePasswordPort, String username) {
+		super(password, encodePasswordPort);
 		this.username = username;
 	}
 
-	public static UsernameAuthentication of(String username, String password) {
-		return new UsernameAuthentication(password, username);
+	public static UsernameAuthentication of(String username, String password, EncodePasswordPort encodePasswordPort) {
+		return new UsernameAuthentication(password, encodePasswordPort, username);
 	}
 }

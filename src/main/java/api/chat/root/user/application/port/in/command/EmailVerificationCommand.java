@@ -5,5 +5,8 @@ package api.chat.root.user.application.port.in.command;
  * Created Date : 3/31/24
  */
 
-public record EmailVerificationCommand(String emailAddress, String code) {
+public record EmailVerificationCommand(
+	String emailAddress,
+	String code
+) {
 }
